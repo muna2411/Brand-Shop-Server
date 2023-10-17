@@ -10,12 +10,9 @@ app.use(express.json());
 //nurnaharmuna2411
 //o1dWPUeqOOUvDqLK
 
-
-
-
 const uri = "mongodb+srv://nurnaharmuna2411:o1dWPUeqOOUvDqLK@cluster0.pjcsd3j.mongodb.net/?retryWrites=true&w=majority";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
