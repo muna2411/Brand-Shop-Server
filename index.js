@@ -1,16 +1,15 @@
-const express = require('express')
-const cors = require('cors')
-const app = express()
+const express = require('express');
+const app = express();
+const cors = require('cors');
+require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000
 
 app.use(cors());
 app.use(express.json());
 
-//nurnaharmuna2411
-//o1dWPUeqOOUvDqLK
 
-const uri = "mongodb+srv://nurnaharmuna2411:o1dWPUeqOOUvDqLK@cluster0.pjcsd3j.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pjcsd3j.mongodb.net/?retryWrites=true&w=majority`;
 
 
 const client = new MongoClient(uri, {
@@ -23,31 +22,31 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
 
-
+ 
 const userCollection = client.db("usersDB").collection("users");
+const userProduct = client.db("usersDB").collection("product");
+const userBrand = client.db("usersDB").collection("brand");
+const userAddToCart = client.db("usersDB").collection("cart");
 
-//all user ke paoa jabe
+
 app.get('/users',async(req,res) =>{
   const cursor = userCollection.find();
   const result = await cursor.toArray();
   res.send(result);
 })
 
-//specific user ke update korar jonno
+
 app.get('/users/:id',async(req,res) =>{
   const id = req.params.id;
-  console.log('Delete' , id);
+  console.log(id);
   
   const query = {_id: new ObjectId(id)}
   const user = await userCollection.findOne(query);
   res.send(user);
- 
 })
 
-//user create er jonno
+
 app.post('/users' , async(req,res) =>{
   const user = req.body;
   console.log('new user : ' , user);
@@ -55,24 +54,33 @@ app.post('/users' , async(req,res) =>{
   res.send(result);
 })
 
+
+
 app.put('/users/:id' , async(req,res) =>{
   const id = req.params.id;
   const user = req.body;
   console.log(id , user);
 
   const filter = {_id: new ObjectId(id)}
-  const options = {upsert:true} //optional kaj
+  const options = {upsert:true} 
   const updatedUser = {
     $set:{
+      id:user.id,
       name:user.name ,
-      email: user.email
+      brand:user.brand,
+      types:user.types ,
+      price:user.price ,
+      description:user.description ,
+      ratings:user.ratings ,
+      image:user.image 
+      
     }
   }
   const result = await userCollection.updateOne(filter , updatedUser ,options);
   res.send(result);
 })
 
-//specific kono user ke delete korar jonno
+
 app.delete('/users/:id' , async(req,res) =>{
   const id = req.params.id;
   console.log('Delete' , id);
@@ -83,19 +91,89 @@ app.delete('/users/:id' , async(req,res) =>{
 })
 
 
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+//add to cart
+
+app.get('/cart',async(req,res) =>{
+  const cursor = userAddToCart.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+app.get('/cart/:id',async(req,res) =>{
+  const id = req.params.id;
+  console.log(id);
+  
+  const query = {_id: new ObjectId(id)}
+  const user = await userAddToCart.findOne(query);
+  res.send(user);
+})
+
+
+app.post('/cart' , async(req,res) =>{
+  const cart = req.body;
+  console.log('new user : ' , cart);
+  const result = await userAddToCart.insertOne(cart);
+  res.send(result);
+})
+
+app.delete('/cart/:id' , async(req,res) =>{
+  const id = req.params.id;
+  console.log('Delete' , id);
+  
+  const query = {_id: new ObjectId(id)}
+  const result = await userAddToCart.deleteOne(query);
+  res.send(result);
+})
+
+
+
+//products
+app.get('/product',async(req,res) =>{
+  const cursor = userProduct.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+app.post('/product' , async(req,res) =>{
+  const product = req.body;
+  console.log('new user : ' , product);
+  const result = await userProduct.insertOne(product);
+  res.send(result);
+})
+
+
+
+//userBrand
+// app.get('/users',async(req,res) =>{
+//   const cursor = userBrand.find();
+//   const result = await cursor.toArray();
+//   res.send(result);
+// })
+
+// app.get('/users/:brand',async(req,res) =>{
+//   const brand = req.params.brand;
+//   console.log(brand);
+  
+//   const query = {brand: new ObjectId(brand)}
+//   const user = await userBrand.findOne(query);
+//   res.send(user);
+// })
+
+// app.post('/users/:brand' , async(req,res) =>{
+//   const brand = req.body;
+//   console.log('new user : ' , brand);
+//   const result = await userBrand.insertOne(brand);
+//   res.send(result);
+// })
+
+
+
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    // Ensures that the client will close when you finish/error
-    //await client.close();
+    
   }
 }
 run().catch(console.dir);
-
-
-
-
 
 app.get('/', (req, res) => {
   res.send('simple crud')
