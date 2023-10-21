@@ -117,7 +117,6 @@ app.post('/cart' , async(req,res) =>{
 app.delete('/cart/:id' , async(req,res) =>{
   const id = req.params.id;
   console.log('Delete' , id);
-  
   const query = {_id: new ObjectId(id)}
   const result = await userAddToCart.deleteOne(query);
   res.send(result);
@@ -126,25 +125,27 @@ app.delete('/cart/:id' , async(req,res) =>{
 
 
 //products
-app.get('/product',async(req,res) =>{
-  const cursor = userProduct.find();
-  const result = await cursor.toArray();
-  res.send(result);
-})
-
-app.post('/product' , async(req,res) =>{
-  const product = req.body;
-  console.log('new user : ' , product);
-  const result = await userProduct.insertOne(product);
-  res.send(result);
-})
-
-// userBrand
-// app.get('/users',async(req,res) =>{
-//   const cursor = userBrand.find();
+// app.get('/product',async(req,res) =>{
+//   const cursor = userProduct.find();
 //   const result = await cursor.toArray();
 //   res.send(result);
 // })
+
+// app.post('/product' , async(req,res) =>{
+//   const product = req.body;
+//   console.log('new user : ' , product);
+//   const result = await userProduct.insertOne(product);
+//   res.send(result);
+// })
+
+
+
+// userBrand
+app.get('/brand',async(req,res) =>{
+  const cursor = userBrand.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
 
 // app.get('/users/:brand',async(req,res) =>{
 //   const brand = req.params.brand;
@@ -154,12 +155,12 @@ app.post('/product' , async(req,res) =>{
 //   res.send(user);
 // })
 
-// app.post('/users/:brand' , async(req,res) =>{
-//   const brand = req.body;
-//   console.log('new user : ' , brand);
-//   const result = await userBrand.insertOne(brand);
-//   res.send(result);
-// })
+app.post('/brand' , async(req,res) =>{
+  const brand = req.body;
+  console.log('new user : ' , brand);
+  const result = await userBrand.insertOne(brand);
+  res.send(result);
+})
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
