@@ -143,7 +143,7 @@ app.post('/product' , async(req,res) =>{
 
 
 
-//userBrand
+// userBrand
 // app.get('/users',async(req,res) =>{
 //   const cursor = userBrand.find();
 //   const result = await cursor.toArray();
@@ -153,7 +153,6 @@ app.post('/product' , async(req,res) =>{
 // app.get('/users/:brand',async(req,res) =>{
 //   const brand = req.params.brand;
 //   console.log(brand);
-  
 //   const query = {brand: new ObjectId(brand)}
 //   const user = await userBrand.findOne(query);
 //   res.send(user);
