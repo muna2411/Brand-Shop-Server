@@ -7,7 +7,8 @@ const port = process.env.PORT || 5000
 
 app.use(cors({
   origin: ['http://localhost:5173',
-'https://marvelous-rabanadas-46c90a.netlify.app'],
+'https://marvelous-rabanadas-46c90a.netlify.app',
+'https://spectacular-halva-6b0d96.netlify.app'],
         credentials: true,
 }));
 app.use(express.json());
