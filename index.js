@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000
 
 app.use(cors({
   origin: ['http://localhost:5173',
-'https://marvelous-rabanadas-46c90a.netlify.app'],
+'https://singular-biscochitos-cc54d4.netlify.app'],
         credentials: true,
 }));
 app.use(express.json());
@@ -94,11 +94,42 @@ app.delete('/users/:id' , async(req,res) =>{
 
 //add to cart
 
-app.get('/cart',async(req,res) =>{
-  const cursor = userAddToCart.find();
-  const result = await cursor.toArray();
+// app.get('/cart',async(req,res) =>{
+//   const cursor = userAddToCart.find();
+//   const result = await cursor.toArray();
+//   res.send(result);
+// })
+
+
+
+// app.get('/cart',async(req,res) =>{
+//   console.log(req.query.email);
+//   let query = {};
+//   if(req.query?.email){
+//     query = {email : req.query.email}
+//   }
+//   const cursor = userAddToCart.find(query);
+//   const result = await cursor.toArray();
+//   res.send(result);
+// })
+// app.get('/cart' , async(req,res) =>{
+//   const email = req.query.email;
+//   const query = {email: email};
+//   const result = await userAddToCart.find(query).toArray();
+//   res.send(result);
+// })
+
+
+app.get('/cart' , async(req,res) =>{
+  const result = await userAddToCart.find().toArray();
   res.send(result);
 })
+// app.get('/cart' , async(req,res) =>{
+//   const email = req.query.email;
+//   const query = {email: email};
+//   const result = await userAddToCart.find(query).toArray();
+//   res.send(result);
+// })
 
 app.get('/cart/:id',async(req,res) =>{
   const id = req.params.id;
